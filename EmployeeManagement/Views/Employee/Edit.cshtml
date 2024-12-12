@@ -1,0 +1,137 @@
+﻿@model EmployeeManagement.Models.EditEmployeeViewModel
+
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<h2 class="mb-5">@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group row mb-3">
+        <label for="EmployeeID" class="col-sm-3 col-form-label">Employee ID</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" readonly id="EmployeeID" name="EmployeeID" value="@Model.EmployeeID" asp-for="EmployeeID" />
+            <span asp-validation-for="EmployeeID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="EmployeeName" class="col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="EmployeeName" name="EmployeeName" value="@Model.EmployeeName" asp-for="EmployeeName" />
+            <span asp-validation-for="EmployeeName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="DepartmentID" class="col-sm-3 col-form-label">Department</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="DepartmentID" name="DepartmentID" asp-for="DepartmentID">
+                <option value="0">Select Department</option>
+                @foreach (var department in Model.Departments)
+                {
+                    <option value="@department.DepartmentID">@department.Name</option>
+                }
+            </select>
+            <span asp-validation-for="DepartmentID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="PositionID" class="col-sm-3 col-form-label">Position</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="PositionID" name="PositionID" asp-for="PositionID">
+                <option value="0">Select Position</option>
+            </select>
+            <span asp-validation-for="PositionID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="BirthDate" class="col-sm-3 col-form-label">Birth Date</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" asp-for="BirthDate" />
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="col-sm-3 col-form-label">Gender</label>
+        <div class="col-sm-9">
+            <div>
+                <label for="Male">
+                    <input type="radio" id="Male" name="Gender" value="Male" asp-for="Gender" />
+                    Male
+                </label>
+                <label for="Female">
+                    <input type="radio" id="Female" name="Gender" value="Female" asp-for="Gender" />
+                    Female
+                </label>
+            </div>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="RegistrationDate" class="col-sm-3 col-form-label">Registration Date</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="RegistrationDate" name="RegistrationDate" asp-for="RegistrationDate" value="@Model.RegistrationDate.ToString("yyyy-MM-dd")" />
+            <span asp-validation-for="RegistrationDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="RecommendationLetter" class="col-sm-3 col-form-label">Recommendation Letter</label>
+        <div class="col-sm-9">
+            <input type="file" class="form-control" id="RecommendationLetter" name="RecommendationLetter" asp-for="RecommendationLetter" />
+            <span asp-validation-for="RecommendationLetter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <div class="col-sm-9 offset-sm-3 text-right">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Function to fetch positions for a given departmentID
+            function fetchPositions(departmentId) {
+                if (departmentId) {
+                    $.getJSON('@Url.Action("GetPositionsByDepartment", "Employee")', { departmentId: departmentId }, function (data) {
+                        var positionSelect = $('#PositionID');
+                        positionSelect.empty(); // Clear existing options
+                        positionSelect.append('<option value="0">Select Position</option>'); // Add default option
+
+                        $.each(data, function (i, position) {
+                            positionSelect.append('<option value="' + position.positionID + '">' + position.name + '</option>');
+                        });
+
+                        // Preselect PositionID if a value exists
+                        var preselectedPosition = '@Model.PositionID';
+                        if (preselectedPosition > 0) {
+                            positionSelect.val(preselectedPosition);
+                        }
+                    });
+                }
+            }
+
+            // Fetch positions when department changes
+            $('#DepartmentID').change(function () {
+                var departmentId = $(this).val();
+                fetchPositions(departmentId);
+            });
+
+            // Fetch positions on page load if DepartmentID is preselected
+            var initialDepartmentId = $('#DepartmentID').val();
+            if (initialDepartmentId) {
+                fetchPositions(initialDepartmentId);
+            }
+        });
+    </script>
+}
