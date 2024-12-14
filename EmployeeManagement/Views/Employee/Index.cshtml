@@ -31,8 +31,11 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="date" name="RegistrationDate" class="form-control" asp-for="RegistrationDate"
-                       value="@(Model.RegistrationDate?.ToString("yyyy-MM-dd") ?? string.Empty)" />
+                <input type="date" 
+                    name="RegistrationDate" 
+                    class="form-control" 
+                    asp-for="RegistrationDate"
+                    value="@(Model.RegistrationDate?.ToString("dd-MM-yyyy") ?? string.Empty)" />
             </div>
         </div>
         <div class="row mt-2">
@@ -40,11 +43,17 @@
                 <button type="submit" class="btn btn-primary">Search</button>
                 <a href="@Url.Action("Index", "Employee")" class="btn btn-secondary">Reset</a>
                 <a href="@Url.Action("ExportToExcel", "Employee", 
-                    new { EmployeeID = Model.EmployeeID, Name = Model.Name, DepartmentID = Model.DepartmentID, RegistrationDate = Model.RegistrationDate })" 
-                    class="btn btn-success">Export to Excel</a>
+                    new { EmployeeID = Model.EmployeeID, 
+                          Name = Model.Name, 
+                          DepartmentID = Model.DepartmentID, 
+                          RegistrationDate = Model.RegistrationDate })" 
+                    class="btn btn-success">Export Excel</a>
                 <a href="@Url.Action("EmployeeReport", "Employee",
-                    new { EmployeeID = Model.EmployeeID, Name = Model.Name, DepartmentID = Model.DepartmentID, RegistrationDate = Model.RegistrationDate })" 
-                    class="btn btn-info">Generate Report (PDF)</a>
+                    new { EmployeeID = Model.EmployeeID,
+                          Name = Model.Name,
+                          DepartmentID = Model.DepartmentID,
+                          RegistrationDate = Model.RegistrationDate?.ToString("yyyy-MM-dd") })"
+                   class="btn btn-info">Generate PDF</a>
             </div>
         </div>
     </form>
@@ -84,6 +93,10 @@
                             <a href="@Url.Action("Edit", "Employee", new { employeeId = employee.EmployeeID })" class="btn btn-warning btn-sm">Edit</a>
                             <a href="@Url.Action("Delete", "Employee", new { employeeId = employee.EmployeeID })" class="btn btn-danger btn-sm"
                                onclick="return confirm('Are you sure you want to delete this employee?');">Delete</a>
+                            <a href="@Url.Action("ViewPdf", "Employee", new { fileName = employee.RecommendationLetter })"
+                               class="btn btn-secondary btn-sm">
+                                PDF View
+                            </a>
                         </td>
                     </tr>
                     counter++;

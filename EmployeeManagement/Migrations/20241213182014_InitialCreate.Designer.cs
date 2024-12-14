@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    [Migration("20241210232846_InitialCreate")]
+    [Migration("20241213182014_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,8 +84,8 @@ namespace EmployeeManagement.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("VARCHAR(100)");
 
-                    b.Property<byte[]>("EmployeePhoto")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("EmployeePhoto")
+                        .HasColumnType("NVARCHAR(MAX)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
@@ -97,17 +97,17 @@ namespace EmployeeManagement.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<byte[]>("NrcBackImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("NrcBackImage")
+                        .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<byte[]>("NrcFrontImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("NrcFrontImage")
+                        .HasColumnType("NVARCHAR(MAX)");
 
                     b.Property<int>("PositionID")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RecommendationLetter")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("RecommendationLetter")
+                        .HasColumnType("NVARCHAR(MAX)");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");

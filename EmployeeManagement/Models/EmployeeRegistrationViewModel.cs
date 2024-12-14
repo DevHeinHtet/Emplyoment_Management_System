@@ -35,6 +35,13 @@ public class EmployeeRegistrationViewModel
     [DataType(DataType.Date)]
     public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
+    public string EmployeePhoto { get; set; }
+    public string NrcFrontImage { get; set; }
+    public string NrcBackImage { get; set; }
+    public IFormFile Profile { get; set; }
+    public IFormFile NrcFront { get; set; }
+    public IFormFile NrcBack { get; set; }
+
     public IFormFile RecommendationLetter { get; set; }
 
     public static ValidationResult ValidateAge(DateTime birthDate, ValidationContext context)

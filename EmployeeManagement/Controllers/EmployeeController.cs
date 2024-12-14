@@ -1,9 +1,11 @@
 ﻿using System.Data;
 using System.Net.Mime;
 using System.Reflection;
-using AspNetCore.Reporting;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Wordprocessing;
 using EmployeeManagement.Data.Entities;
+using EmployeeManagement.DataSets;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.Filters;
 using EmployeeManagement.Models.Reports;
@@ -11,6 +13,7 @@ using EmployeeManagement.Services.Departments;
 using EmployeeManagement.Services.Employees;
 using EmployeeManagement.Services.Positions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Reporting.NETCore;
 
 namespace EmployeeManagement.Controllers
 {
@@ -20,6 +23,9 @@ namespace EmployeeManagement.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IDepartmentService _departmentSerice;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly string PROFILE = "Profiles";
+        private readonly string NRCPHOTO = "NRCPhotos";
+        private readonly string PDF = "PDFFiles";
 
         public EmployeeController(
             IPositionService positionService,
@@ -44,23 +50,40 @@ namespace EmployeeManagement.Controllers
                 RegistrationDate = viewModel.RegistrationDate,
             };
             var employees = await _employeeService.GetEmployeesWithIncludeAsync(filter);
-
             var departments = await _departmentSerice.GetDepartmentsAsync();
+
             viewModel.Departments = departments;
             viewModel.Employees = employees;
 
             return View(viewModel);
         }
 
-        public async Task<IActionResult> ExportToExcel(string employeeID, string name, int departmentID, DateTime? registrationDate)
+        public IActionResult ViewPdf(string fileName)
         {
-            var filter = new EmployeeFilter
+            if (string.IsNullOrWhiteSpace(fileName))
             {
-                EmployeeID = employeeID,
-                Name = name,
-                DepartmentID = departmentID,
-                RegistrationDate = registrationDate,
-            };
+                return BadRequest("Invalid file name.");
+            }
+
+            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, $"files/{PDF}", fileName);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("The requested file was not found.");
+            }
+
+            try
+            {
+                var fileBytes = System.IO.File.ReadAllBytes(filePath);
+                return File(fileBytes, "application/pdf", fileName, enableRangeProcessing: true);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while processing the file: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> ExportToExcel(EmployeeFilter filter)
+        {
             var employees = await _employeeService.GetEmployeesWithIncludeAsync(filter);
 
             using (var workbook = new XLWorkbook())
@@ -93,17 +116,12 @@ namespace EmployeeManagement.Controllers
                     return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Employees.xlsx");
                 }
             }
+            //var result = report.Render("EXCELOPENXML");
+            //return File(result, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "EmployeeReport.xlsx");
         }
 
-        public async Task<IActionResult> EmployeeReport(string employeeID, string name, int departmentID, DateTime? registrationDate)
+        public async Task<IActionResult> EmployeeReport(EmployeeFilter filter)
         {
-            var filter = new EmployeeFilter
-            {
-                EmployeeID = employeeID,
-                Name = name,
-                DepartmentID = departmentID,
-                RegistrationDate = registrationDate,
-            };
             var employees = await _employeeService.GetEmployeesWithIncludeAsync(filter);
 
             var employeeDtos = employees.Select(x => new EmployeeDto
@@ -116,17 +134,16 @@ namespace EmployeeManagement.Controllers
                 RegistrationDate = x.RegistrationDate
             }).ToList();
 
-            var reportPath = Path.Combine(_webHostEnvironment.WebRootPath, "Reports", "RptEmployee.rdlc");
+            var basePath = _webHostEnvironment.WebRootPath;
+            string reportPath = Path.Combine(basePath, @"Reports\RptEmployee.rdlc");
 
-            var report = new LocalReport(reportPath);
+            using var report = new LocalReport();
+            report.ReportPath = reportPath;
+            report.DataSources.Add(new ReportDataSource("EmployeeDS", employeeDtos));
 
-            var datasource = ToDataTable(employeeDtos);
+            var result = report.Render("PDF");
 
-            report.AddDataSource("EmployeeDS", datasource);
-
-            var result = report.Execute(RenderType.Pdf, 1, null);
-
-            return File(result.MainStream, MediaTypeNames.Application.Octet, "EmployeeReport.pdf");
+            return File(result, "application/pdf", "EmployeeReport.pdf");
         }
 
         public async Task<IActionResult> Create()
@@ -151,10 +168,21 @@ namespace EmployeeManagement.Controllers
             viewModel.EmployeeID = newEmployeeID;
             viewModel.Departments = departments;
 
+            if (viewModel.RecommendationLetter != null &&
+                viewModel.RecommendationLetter.ContentType != "application/pdf")
+            {
+                ModelState.AddModelError("RecommendationLetter", "The uploaded file is not a valid PDF.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
+
+            var profilePath = await UploadFile(PROFILE, viewModel.Profile);
+            var nrcFrontPath = await UploadFile(NRCPHOTO, viewModel.NrcFront);
+            var nrcBackPath = await UploadFile(NRCPHOTO, viewModel.NrcBack);
+            var recommendationPath = await UploadFile(PDF, viewModel.RecommendationLetter);
 
             var employee = new Employee
             {
@@ -163,6 +191,9 @@ namespace EmployeeManagement.Controllers
                 BirthDate = viewModel.BirthDate,
                 Gender = viewModel.Gender,
                 PositionID = viewModel.PositionID,
+                EmployeePhoto = profilePath,
+                NrcFrontImage = nrcFrontPath,
+                NrcBackImage = nrcBackPath,
                 RegistrationDate = viewModel.RegistrationDate,
             };
             await _employeeService.AddEmployeeAsync(employee);
@@ -187,6 +218,9 @@ namespace EmployeeManagement.Controllers
                 DepartmentID = employee.Position.DepartmentID,
                 PositionID = employee.Position.PositionID,
                 RegistrationDate = employee.RegistrationDate,
+                EmployeePhoto = FullFilePath(PROFILE, employee.EmployeePhoto),
+                NrcFrontImage = FullFilePath(NRCPHOTO, employee.NrcFrontImage),
+                NrcBackImage = FullFilePath(NRCPHOTO, employee.NrcBackImage),
                 Departments = departments,
             };
 
@@ -198,6 +232,41 @@ namespace EmployeeManagement.Controllers
         {
             var existingEmployee = await _employeeService.GetEmployeeByEmployeeIDAsync(employeeId);
             if (existingEmployee == null) return NotFound();
+
+            if (viewModel.RecommendationLetter != null &&
+                viewModel.RecommendationLetter.ContentType != "application/pdf")
+            {
+                ModelState.AddModelError("RecommendationLetter", "The uploaded file is not a valid PDF.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            if (viewModel.Profile != null)
+            {
+                DeleteFileIsExists(PROFILE, existingEmployee.EmployeePhoto);
+                existingEmployee.EmployeePhoto = await UploadFile(PROFILE, viewModel.Profile);
+            }
+
+            if (viewModel.NrcFront != null)
+            {
+                DeleteFileIsExists(NRCPHOTO, existingEmployee.NrcFrontImage);
+                existingEmployee.NrcFrontImage = await UploadFile(NRCPHOTO, viewModel.NrcFront);
+            }
+
+            if (viewModel.NrcBack != null)
+            {
+                DeleteFileIsExists(NRCPHOTO, existingEmployee.NrcBackImage);
+                existingEmployee.NrcBackImage = await UploadFile(NRCPHOTO, viewModel.NrcBack);
+            }
+
+            if (viewModel.RecommendationLetter != null)
+            {
+                DeleteFileIsExists(NRCPHOTO, existingEmployee.NrcBackImage);
+                existingEmployee.RecommendationLetter = await UploadFile(PDF, viewModel.RecommendationLetter);
+            }
 
             existingEmployee.EmployeeName = viewModel.EmployeeName;
             existingEmployee.BirthDate = viewModel.BirthDate;
@@ -231,28 +300,51 @@ namespace EmployeeManagement.Controllers
             return Json(positions);
         }
 
-        public DataTable ToDataTable<T>(List<T> items)
+        private async Task<string> UploadFile(string folderName, IFormFile file)
         {
-            var dataTable = new DataTable(typeof(T).Name);
-            //Get all the properties
-            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (PropertyInfo prop in Props)
+            if (file != null && !string.IsNullOrWhiteSpace(folderName))
             {
-                //Setting column names as Property names
-                dataTable.Columns.Add(prop.Name);
-            }
-            foreach (T item in items)
-            {
-                var values = new object[Props.Length];
-                for (int i = 0; i < Props.Length; i++)
+                // Save the photo to the wwwroot folder
+                string extension = Path.GetExtension(file.FileName);
+                string newFileName = $"{Guid.NewGuid().ToString()}{extension}";
+                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, $"files/{folderName}", newFileName);
+
+                // Create the images folder if it doesn't exist
+                var directory = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(directory))
                 {
-                    //inserting property values to datatable rows
-                    values[i] = Props[i].GetValue(item, null);
+                    Directory.CreateDirectory(directory);
                 }
-                dataTable.Rows.Add(values);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                return $"{newFileName}";
             }
-            //put a breakpoint here and check datatable
-            return dataTable;
+            return string.Empty;
+        }
+
+        private string FullFilePath(string folderName, string fileName)
+        {
+            if (!string.IsNullOrWhiteSpace(fileName))
+            {
+                return $"/files/{folderName}/{fileName}";
+            }
+            return string.Empty;
+        }
+
+        private void DeleteFileIsExists(string folderName, string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string existingFileFullPath = Path.Combine(_webHostEnvironment.WebRootPath, $"files/{folderName}", fileName);
+
+                if (System.IO.File.Exists(existingFileFullPath))
+                {
+                    System.IO.File.Delete(existingFileFullPath);
+                }
+            }
         }
     }
 }

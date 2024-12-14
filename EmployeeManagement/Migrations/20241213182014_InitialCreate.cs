@@ -52,10 +52,10 @@ namespace EmployeeManagement.Migrations
                     Gender = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false),
                     PositionID = table.Column<int>(type: "int", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RecommendationLetter = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    EmployeePhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    NrcFrontImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    NrcBackImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    RecommendationLetter = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true),
+                    EmployeePhoto = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true),
+                    NrcFrontImage = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true),
+                    NrcBackImage = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true),
                     IsRecordDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>

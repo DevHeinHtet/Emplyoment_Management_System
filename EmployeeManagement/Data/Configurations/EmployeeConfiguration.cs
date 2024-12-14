@@ -36,16 +36,16 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .IsRequired();
 
         builder.Property(e => e.RecommendationLetter)
-            .HasColumnType("varbinary(max)");
+            .HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(e => e.EmployeePhoto)
-            .HasColumnType("varbinary(max)");
+            .HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(e => e.NrcFrontImage)
-            .HasColumnType("varbinary(max)");
+            .HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(e => e.NrcBackImage)
-            .HasColumnType("varbinary(max)");
+            .HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(e => e.IsRecordDeleted)
             .HasDefaultValue(false);

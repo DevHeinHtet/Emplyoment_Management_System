@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace EmployeeManagement.Data.Entities;
+﻿namespace EmployeeManagement.Data.Entities;
 
 public class Employee
 {
@@ -12,9 +9,9 @@ public class Employee
     public int PositionID { get; set; }
     public Position Position { get; set; }
     public DateTime RegistrationDate { get; set; }
-    public byte[] RecommendationLetter { get; set; } // PDF file as byte[]
-    public byte[] EmployeePhoto { get; set; } // JPG file as byte[]
-    public byte[] NrcFrontImage { get; set; } // Front NRC image as byte[]
-    public byte[] NrcBackImage { get; set; } // Back NRC image as byte[]
+    public string RecommendationLetter { get; set; }
+    public string EmployeePhoto { get; set; }
+    public string NrcFrontImage { get; set; }
+    public string NrcBackImage { get; set; }
     public bool IsRecordDeleted { get; set; } = false;
 }

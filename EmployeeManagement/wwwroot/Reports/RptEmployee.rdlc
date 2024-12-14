@@ -6,22 +6,22 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.98045in</Width>
+              <Width>1.04287in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.2357in</Width>
+              <Width>1.46747in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.73211in</Width>
+              <Width>0.98429in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.43575in</Width>
+              <Width>1.53838in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.98045in</Width>
+              <Width>1.10257in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.84386in</Width>
+              <Width>1.13441in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -40,6 +40,7 @@
                               <Value>Employee ID</Value>
                               <Style>
                                 <FontFamily />
+                                <Color>White</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -52,8 +53,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -72,14 +74,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Name</Value>
+                              <Value>Employee Name</Value>
                               <Style>
                                 <FontFamily />
+                                <Color>White</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -87,8 +90,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -110,6 +114,7 @@
                               <Value>Birth Date</Value>
                               <Style>
                                 <FontFamily />
+                                <Color>White</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -122,8 +127,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -143,11 +149,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Department</Value>
-                              <Style />
+                              <Style>
+                                <Color>White</Color>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -155,8 +163,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -176,11 +185,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Position</Value>
-                              <Style />
+                              <Style>
+                                <Color>White</Color>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -188,8 +199,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -209,7 +221,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Registration Date</Value>
-                              <Style />
+                              <Style>
+                                <Color>White</Color>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -221,8 +235,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -235,7 +250,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.25in</Height>
+              <Height>0.31222in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -247,18 +262,23 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!EmployeeID.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>EmployeeID</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -277,7 +297,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Name.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -287,8 +309,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -306,19 +329,24 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!BirthDate.Value</Value>
-                              <Style />
+                              <Value>=Format(Fields!BirthDate.Value, "dd-MM-yyyy")</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>BirthDate</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -337,7 +365,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Department.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -347,8 +377,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -367,7 +398,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Position.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -377,8 +410,9 @@
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -396,19 +430,24 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!RegistrationDate.Value</Value>
-                              <Style />
+                              <Value>=Format(Fields!RegistrationDate.Value, "dd-MM-yyyy")</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>RegistrationDate</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -441,11 +480,9 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DataSet1</DataSetName>
-        <Top>0.14087in</Top>
-        <Left>0.155in</Left>
-        <Height>0.66556in</Height>
-        <Width>6.20833in</Width>
+        <DataSetName>EmployeeDS</DataSetName>
+        <Height>0.72778in</Height>
+        <Width>7.27in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -454,13 +491,13 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>0.86865in</Height>
+    <Height>0.72778in</Height>
     <Style />
   </Body>
-  <Width>6.5in</Width>
+  <Width>7.27in</Width>
   <Page>
     <PageHeader>
-      <Height>0.41708in</Height>
+      <Height>0.46479in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -472,7 +509,9 @@
               <TextRuns>
                 <TextRun>
                   <Value>Employee Report</Value>
-                  <Style />
+                  <Style>
+                    <FontSize>13pt</FontSize>
+                  </Style>
                 </TextRun>
               </TextRuns>
               <Style>
@@ -481,10 +520,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Top>0.12375in</Top>
-          <Left>0.155in</Left>
-          <Height>0.25in</Height>
-          <Width>6.20833in</Width>
+          <Height>0.46479in</Height>
+          <Width>7.27in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -505,10 +542,10 @@
     </PageHeader>
     <PageHeight>11.69in</PageHeight>
     <PageWidth>8.27in</PageWidth>
-    <LeftMargin>1in</LeftMargin>
-    <RightMargin>1in</RightMargin>
-    <TopMargin>1in</TopMargin>
-    <BottomMargin>1in</BottomMargin>
+    <LeftMargin>0.5in</LeftMargin>
+    <RightMargin>0.5in</RightMargin>
+    <TopMargin>0.5in</TopMargin>
+    <BottomMargin>0.5in</BottomMargin>
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
@@ -522,7 +559,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet1">
+    <DataSet Name="EmployeeDS">
       <Query>
         <DataSourceName>EmployeeDS</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
@@ -555,7 +592,7 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>EmployeeDS</rd:DataSetName>
-        <rd:SchemaPath>C:\Projects\Dotnet\EmployeeManagement\WinFormsApp1\DataSets\EmployeeDS.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Projects\Dotnet\EmployeeManagement\EmployeeManagement\DataSets\EmployeeDS.xsd</rd:SchemaPath>
         <rd:TableName>Employee</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
