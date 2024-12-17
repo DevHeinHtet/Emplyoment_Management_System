@@ -264,7 +264,7 @@ namespace EmployeeManagement.Controllers
 
             if (viewModel.RecommendationLetter != null)
             {
-                DeleteFileIsExists(NRCPHOTO, existingEmployee.NrcBackImage);
+                DeleteFileIsExists(PDF, existingEmployee.RecommendationLetter);
                 existingEmployee.RecommendationLetter = await UploadFile(PDF, viewModel.RecommendationLetter);
             }
 
